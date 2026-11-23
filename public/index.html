@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ATS Live Clipper — Paste Stream, Find Best Moments, Create Clips</title>
+<link rel="stylesheet" href="/style.css">
+</head>
+<body>
+<header>
+  <img class="logo" src="/logo.jpg" alt="ATS Live Clipper logo">
+  <div><h1>ATS Live Clipper</h1><small>Paste Stream → Find Best Moments → Create Clips → Export</small></div>
+  <div class="counter" id="counter">Free 0/10 today</div>
+</header>
+
+<div class="follow-gate" id="followGate">
+  <div class="follow-box">
+    <img src="/logo.jpg" alt="ATS Live Clipper">
+    <h2>ATS Live Clipper</h2>
+    <p>Follow our channels first, then start clipping. Free 10 clips/day.</p>
+    <a class="tg" href="https://t.me/fake_number_ahtisham_otp" target="_blank" rel="noopener">Join Telegram Channel</a>
+    <a class="wa" href="https://whatsapp.com/channel/0029Vb91FFg29752MnJuYV0S" target="_blank" rel="noopener">Join WhatsApp Channel</a>
+    <button id="followedBtn">I FOLLOWED</button>
+    <p style="font-size:12px;color:#666">You only see this once on this device.</p>
+  </div>
+</div>
+
+<main>
+  <div class="tabs">
+    <button id="tabClipper" class="active" onclick="showTab('clipper')">Clipper</button>
+    <button id="tabPremium" onclick="showTab('premium')">Premium</button>
+  </div>
+
+  <section id="tab-clipper">
+    <div class="card">
+      <h2>1. Paste YouTube live or VOD link</h2>
+      <input id="url" type="url" placeholder="https://www.youtube.com/watch?v=...">
+      <button id="analyzeBtn" onclick="analyze()">ANALYZE</button>
+      <p id="status" style="color:#666"></p>
+      <div id="videoInfo" class="hidden">
+        <img id="thumb" src="" alt="" style="width:100%;border-radius:12px">
+        <h3 id="vTitle"></h3>
+        <p id="vMeta"></p>
+        <span class="badge" id="vBadge">YOUTUBE API · REAL DATA</span>
+        <span class="badge" id="chatBadge"></span>
+        <p id="geminiNote" style="font-size:13px"></p>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>2. Settings</h2>
+      <div class="row">
+        <div><label>Clip length</label><select id="clipLen"><option>15</option><option selected>30</option><option>60</option><option>90</option></select></div>
+        <div><label>Max clips</label><select id="maxClips"><option>5</option><option selected>10</option><option>20</option></select></div>
+      </div>
+      <div class="row">
+        <div><label>Ratio</label><select id="ratio"><option selected>9:16</option><option>4:5</option><option>1:1</option><option>16:9</option></select></div>
+        <div><label>Caption language</label><select id="capLang"><option selected>Roman Urdu</option><option>English</option><option>Urdu</option><option>Hindi</option></select></div>
+      </div>
+      <label><input type="checkbox" id="captionsOn" checked style="width:auto"> Captions on (large, bold, colorful, centered)</label>
+      <label>Facecam layout</label>
+      <select id="layout"><option value="auto" selected>Auto — detect facecam</option><option value="split">Split — game top, facecam bottom</option><option value="full">Full — game only</option></select>
+      <div id="facecamBox" class="grid">
+        <div><label>Facecam Left %</label><input id="fcLeft" type="number" value="65" min="0" max="90"></div>
+        <div><label>Facecam Top %</label><input id="fcTop" type="number" value="65" min="0" max="90"></div>
+        <div><label>Facecam Width %</label><input id="fcWidth" type="number" value="35" min="10" max="100"></div>
+        <div><label>Facecam Height %</label><input id="fcHeight" type="number" value="35" min="10" max="100"></div>
+      </div>
+      <p style="font-size:12px;color:#666">Auto-detect samples 10 frames across the clip. If it misses, use Split + the box above, or Manual Clip below. Output is always Full HD 1080p.</p>
+    </div>
+
+    <div class="card">
+      <h2>3. Manual Clip — cut it yourself</h2>
+      <div class="row">
+        <div><label>Start time (12:34 or 1:00:00)</label><input id="manualStart" placeholder="12:34"></div>
+        <div><label>Seconds to cut</label><input id="manualSecs" type="number" value="30" min="5" max="120"></div>
+      </div>
+      <button class="secondary" onclick="manualClip()">CREATE MANUAL CLIP</button>
+    </div>
+
+    <div class="card">
+      <h2>4. Best moments</h2>
+      <p id="noClips">Analyze a link first. Candidates show timecode, spike score and hype reason.</p>
+      <div id="clips"></div>
+      <button id="pollBtn" class="secondary hidden" onclick="analyze(true)">Poll live chat — find new spikes</button>
+    </div>
+
+    <div class="card">
+      <h2>Your clips</h2>
+      <div id="library"><p style="color:#666">Generated clips appear here with Download MP4 + SRT buttons.</p></div>
+    </div>
+  </section>
+
+  <section id="tab-premium" class="hidden">
+    <div class="card">
+      <h2>Premium — 499 PKR / month</h2>
+      <p class="price">499 PKR <small>/ month</small></p>
+      <p>Free: 10 clips/day, 720p-1080p, basic captions.<br>Premium: 100+ clips/day, Full HD 1080p, AI captions + SEO, faster queue.</p>
+      <p id="payInfo">Payment accounts are set by the owner in <code>config/payments.json</code>. Send payment, then submit your Transaction ID below.</p>
+      <label>Transaction ID</label>
+      <input id="txn" placeholder="Enter Txn ID after payment">
+      <button onclick="submitTxn()">SUBMIT TXN ID</button>
+      <p id="txnMsg" style="font-size:13px"></p>
+      <p style="font-size:12px;color:#666">Premium is optional. Free use never needs a login or a database.</p>
+    </div>
+  </section>
+</main>
+
+<div class="popup hidden" id="joinPopup">
+  <div class="box">
+    <h2>Download complete!</h2>
+    <p>Your clip is saved. Join our channels for more free clips:</p>
+    <a href="https://whatsapp.com/channel/0029Vb91FFg29752MnJuYV0S" target="_blank" rel="noopener" style="display:block;background:#25d366;color:#fff;font-weight:800;text-decoration:none;padding:12px;border-radius:12px;margin-top:8px">Join WhatsApp Channel</a>
+    <a href="https://t.me/fake_number_ahtisham_otp" target="_blank" rel="noopener" style="display:block;background:#229ed9;color:#fff;font-weight:800;text-decoration:none;padding:12px;border-radius:12px;margin-top:8px">Join Telegram Channel</a>
+    <button class="secondary" onclick="document.getElementById('joinPopup').classList.add('hidden')">Close</button>
+  </div>
+</div>
+
+<script src="/app.js"></script>
+</body>
+</html>
