@@ -1,0 +1,16 @@
+# Render Blueprint - deploys ATS Live Clipper as a free Docker web service.
+# Render Dashboard -> Blueprints -> New Blueprint Instance, pick this repo.
+# Set YOUTUBE_API_KEY (required) and GEMINI_API_KEY (optional) in the
+# service's Environment tab after the first deploy, then redeploy.
+services:
+  - type: web
+    name: ats-live-clipper
+    env: docker
+    dockerfilePath: ./Dockerfile
+    plan: free
+    healthCheckPath: /
+    envVars:
+      - key: YOUTUBE_API_KEY
+        sync: false
+      - key: GEMINI_API_KEY
+        sync: false
