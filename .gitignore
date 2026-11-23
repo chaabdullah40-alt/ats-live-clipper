@@ -1,0 +1,8 @@
+node_modules/
+.env
+jobs/
+*.mp4
+*.srt
+*.ass
+*.webm
+.DS_Store
